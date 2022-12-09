@@ -10,7 +10,7 @@ pipeline {
         SONARQUBE_SERVER_IP ="172.22.0.4"
         SONARQUBE_SERVER_USER="root"
         JENKINS_SERVER_IP ="172.22.0.2"
-        JENKINS_SERVER_USER="karim"
+        JENKINS_SERVER_USER="ahmed"
         IMAGE_NAME="SPRING-APP-1.0.0"
     }
     tools {
