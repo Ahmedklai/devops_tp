@@ -2,9 +2,9 @@
 def buildImage() {
     echo "building the docker image..."
     withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-        sh "docker build -t karimkhammassi/my-repo:spring-app-${IMAGE_NAME} ."
+        sh "docker build -t ahmedkhammassi/my-repo:spring-app-${IMAGE_NAME} ."
         sh "echo $PASS | docker login -u $USER --password-stdin"
-        sh "docker push karimkhammassi/my-repo:spring-app-${IMAGE_NAME}"
+        sh "docker push ahmedKlai/my-repo:spring-app-${IMAGE_NAME}"
     }
 }
 
@@ -15,7 +15,7 @@ def pushToNexus() {
 
 def sonarScan(String serverIp, String serverUser) {
     echo "Running sonarQube scan..."
-    def runSonar = '"export MYSQLDB_ROOT_PASSWORD=karim MYSQLDB_DATABASE=pet_store MYSQLDB_LOCAL_PORT=3306 MYSQLDB_DOCKER_PORT=3306 && bash runSonarQube.sh"'
+    def runSonar = '"export MYSQLDB_ROOT_PASSWORD=ahmed MYSQLDB_DATABASE=pet_store MYSQLDB_LOCAL_PORT=3306 MYSQLDB_DOCKER_PORT=3306 && bash runSonarQube.sh"'
     sh "docker exec -it sonarQube-container bash -c ${runSonar}"
     // sshagent (credentials: ['sonar-server']) {
     //     sh "ssh -o StrictHostKeyChecking=no ${serverUser}@${serverIp} ${runSonar}"
@@ -24,7 +24,7 @@ def sonarScan(String serverIp, String serverUser) {
 
 def deployApp(String serverIp, String serverUser) {
     echo 'deploying the application...'
-    def composeRun = '"export MYSQLDB_USER=root MYSQLDB_ROOT_PASSWORD=karim MYSQLDB_DATABASE=pet_store MYSQLDB_LOCAL_PORT=3306 MYSQLDB_DOCKER_PORT=3306 SPRING_LOCAL_PORT=8080 SPRING_DOCKER_PORT=8080 && docker-compose up -d"'
+    def composeRun = '"export MYSQLDB_USER=root MYSQLDB_ROOT_PASSWORD=ahmed MYSQLDB_DATABASE=pet_store MYSQLDB_LOCAL_PORT=3306 MYSQLDB_DOCKER_PORT=3306 SPRING_LOCAL_PORT=8080 SPRING_DOCKER_PORT=8080 && docker-compose up -d"'
     sshagent (credentials: ['deployment-server']) {
         sh "ssh -o StrictHostKeyChecking=no ${serverUser}@${serverIp} ${composeRun}"
     }
